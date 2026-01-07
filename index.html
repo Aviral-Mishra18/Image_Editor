@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuminaX | The Visual Forge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --bg-deep: #030005;
+            --bg-panel: rgba(10, 10, 15, 0.65);
+            --bg-panel-hover: rgba(20, 20, 30, 0.8);
+
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff0055;
+            --neon-yellow: #ffe600;
+
+            --text-main: #ffffff;
+            --text-muted: #8b9bb4;
+
+            --border-glow: 0 0 10px rgba(0, 243, 255, 0.2);
+            --border-color: rgba(0, 243, 255, 0.15);
+
+            --glass-blur: blur(20px);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-sm: 8px;
+
+            --font-display: 'Orbitron', sans-serif;
+            --font-ui: 'Rajdhani', sans-serif;
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.1) 0%, transparent 50%);
+        }
+
+        /* Animated Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 50px 50px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: scale(1.1) translateY(0);
+            }
+
+            50% {
+                transform: scale(1.15) translateY(-20px);
+            }
+
+            100% {
+                transform: scale(1.1) translateY(0);
+            }
+        }
+
+        /* --- UTILITIES --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .glass {
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 10px;
+        }
+
+        /* --- LANDING PAGE --- */
+        #landing-page {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            will-change: transform;
+        }
+
+        #landing-page.slide-up {
+            transform: translateY(-150vh);
+        }
+
+        .hero-glitch {
+            font-family: var(--font-display);
+            font-size: 6rem;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            position: relative;
+            color: #fff;
+            text-shadow: 0 0 20px var(--neon-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .hero-glitch::before,
+        .hero-glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            clip-path: inset(0 0 0 0);
+            animation: glitch-anim-1 3s infinite linear alternate-reverse;
+        }
+
+        .hero-glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--neon-purple);
+            clip-path: inset(0 0 0 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% {
+                clip-path: inset(20% 0 80% 0);
+            }
+
+            20% {
+                clip-path: inset(60% 0 10% 0);
+            }
+
+            40% {
+                clip-path: inset(40% 0 50% 0);
+            }
+
+            60% {
+                clip-path: inset(80% 0 5% 0);
+            }
+
+            80% {
+                clip-path: inset(10% 0 70% 0);
+            }
+
+            100% {
+                clip-path: inset(30% 0 20% 0);
+            }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% {
+                clip-path: inset(10% 0 60% 0);
+            }
+
+            20% {
+                clip-path: inset(80% 0 5% 0);
+            }
+
+            40% {
+                clip-path: inset(30% 0 20% 0);
+            }
+
+            60% {
+                clip-path: inset(10% 0 80% 0);
+            }
+
+            80% {
+                clip-path: inset(50% 0 10% 0);
+            }
+
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        .hero-sub {
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            letter-spacing: 4px;
+            margin-bottom: 3rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .start-btn {
+            position: relative;
+            padding: 1.2rem 4rem;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: #000;
+            background: var(--neon-cyan);
+            border: none;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            cursor: pointer;
+            /* Optimized transition */
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s;
+            font-weight: 700;
+            text-decoration: none;
+            will-change: transform;
+        }
+
+        .start-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 30px var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        /* --- APP INTERFACE --- */
+        #app-interface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100vh);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(0, 0, 0, 0.8);
+            will-change: transform;
+        }
+
+        #app-interface.active {
+            transform: translateY(0);
+        }
+
+        .top-bar {
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 20;
+        }
+
+        .app-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-logo i {
+            color: var(--neon-cyan);
+        }
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar (Tools) */
+        .tools-panel {
+            width: 350px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: rgba(5, 5, 10, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-ui);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--neon-cyan);
+            border-bottom-color: var(--neon-cyan);
+            background: linear-gradient(to top, rgba(0, 243, 255, 0.1), transparent);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Control Styles */
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--neon-cyan);
+            border: 2px solid #000;
+            transform: rotate(45deg);
+            /* Diamond shape */
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-cyan);
+            /* Optimized slider transition */
+            transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: rotate(45deg) scale(1.3);
+            background: #fff;
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .preset-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            /* Short transition */
+            font-size: 0.9rem;
+        }
+
+        .preset-chip:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            transform: translateY(-2px);
+        }
+
+        /* Transform Tools Grid */
+        .transform-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .icon-btn:hover {
+            background: var(--neon-purple);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .icon-btn i {
+            font-size: 1.5rem;
+        }
+
+        .icon-btn span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* Middle Canvas Area */
+        .canvas-wrapper {
+            flex: 1;
+            background: radial-gradient(circle at center, rgba(30, 30, 40, 0.5), rgba(5, 5, 10, 0.8));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Important for performance */
+            image-rendering: auto;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            border: 2px dashed var(--border-color);
+            padding: 4rem;
+            border-radius: var(--radius-lg);
+            transition: 0.3s;
+        }
+
+        .empty-state.drag-over {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.05);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Toolbar (Top Center) */
+        .action-bar {
+            position: absolute;
+            bottom: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, color 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-cyan);
+            transform: scale(1.1);
+        }
+
+        .action-btn.primary {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .action-btn.primary:hover {
+            transform: scale(1.1);
+            background: #fff;
+        }
+
+        /* Text Overlay Inputs */
+        .text-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            color: #fff;
+            margin-bottom: 1rem;
+            font-family: var(--font-ui);
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--neon-cyan);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            font-family: var(--font-ui);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Grid -->
+    <div class="grid-bg"></div>
+
+    <!-- LANDING PAGE -->
+    <section id="landing-page">
+        <h1 class="hero-glitch" data-text="LUMINA X">LUMINA X</h1>
+        <p class="hero-sub">The Ultimate Visual Forge</p>
+        <button class="start-btn" onclick="enterApp()">INITIALIZE SYSTEM</button>
+    </section>
+
+    <!-- MAIN APP -->
+    <section id="app-interface">
+        <div class="top-bar glass">
+            <div class="app-logo">
+                <i class="ri-shining-fill"></i> LUMINA X
+            </div>
+            <button class="icon-btn" style="width:auto; padding: 5px 15px; flex-direction:row;" onclick="exitApp()">
+                <i class="ri-shut-down-line"></i> <span>EXIT</span>
+            </button>
+        </div>
+
+        <div class="workspace">
+            <!-- TOOLS PANEL -->
+            <aside class="tools-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('adjust')">ADJUST</button>
+                    <button class="tab-btn" onclick="switchTab('transform')">TRANSFORM</button>
+                    <button class="tab-btn" onclick="switchTab('text')">OVERLAY</button>
+                </div>
+
+                <!-- Tab: Adjust -->
+                <div id="tab-adjust" class="tab-content active">
+                    <!-- Standard Filters -->
+                    <div class="control-group">
+                        <div class="control-label"><span>Brightness</span> <span id="val-brightness">100%</span></div>
+                        <input type="range" id="in-brightness" min="0" max="200" value="100"
+                            oninput="updateFilter('brightness', this.value)">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><span>Contrast</span> <span id="val-contrast">100%</span></div>
+                        <input type="range" id="in-contrast" min="0" max="200" value="100"
+                            oninput="updateFilter('contrast', this.value)">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><span>Saturation</span> <span id="val-saturation">100%</span></div>
+                        <input type="range" id="in-saturation" min="0" max="200" value="100"
+                            oninput="updateFilter('saturation', this.value)">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><span>Blur</span> <span id="val-blur">0px</span></div>
+                        <input type="range" id="in-blur" min="0" max="20" value="0"
+                            oninput="updateFilter('blur', this.value)">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><span>Noise (Grain)</span> <span id="val-noise">0</span></div>
+                        <input type="range" id="in-noise" min="0" max="50" value="0"
+                            oninput="updateFilter('noise', this.value)">
+                    </div>
+
+                    <div style="margin-top:2rem; margin-bottom:1rem; border-bottom:1px solid var(--border-color);">
+                    </div>
+
+                    <h4 style="margin-bottom:1rem; color:var(--neon-cyan); font-family:var(--font-display);">PRESETS
+                    </h4>
+                    <div class="preset-grid">
+                        <div class="preset-chip" onclick="applyPreset('cyber')">CYBER</div>
+                        <div class="preset-chip" onclick="applyPreset('noir')">NOIR</div>
+                        <div class="preset-chip" onclick="applyPreset('vintage')">VINTAGE</div>
+                        <div class="preset-chip" onclick="applyPreset('sunset')">SUNSET</div>
+                    </div>
+                </div>
+
+                <!-- Tab: Transform -->
+                <div id="tab-transform" class="tab-content">
+                    <h4 style="margin-bottom:1rem; color:var(--text-muted);">ORIENTATION</h4>
+                    <div class="transform-grid">
+                        <button class="icon-btn" onclick="rotateImage(-90)">
+                            <i class="ri-anticlockwise-2-line"></i> <span>Rot -90°</span>
+                        </button>
+                        <button class="icon-btn" onclick="rotateImage(90)">
+                            <i class="ri-clockwise-2-line"></i> <span>Rot +90°</span>
+                        </button>
+                        <button class="icon-btn" onclick="flipImage('h')">
+                            <i class="ri-arrow-left-right-line"></i> <span>Flip H</span>
+                        </button>
+                        <button class="icon-btn" onclick="flipImage('v')">
+                            <i class="ri-arrow-up-down-line"></i> <span>Flip V</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab: Text -->
+                <div id="tab-text" class="tab-content">
+                    <h4 style="margin-bottom:1rem; color:var(--text-muted);">ADD WATERMARK</h4>
+                    <input type="text" id="text-input" class="text-input" placeholder="Enter text here..."
+                        oninput="updateTextOverlay()">
+
+                    <div class="control-group">
+                        <div class="control-label"><span>Size</span> <span id="val-textSize">40px</span></div>
+                        <input type="range" id="in-textSize" min="10" max="200" value="40"
+                            oninput="updateTextOverlay()">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label"><span>Opacity</span></div>
+                        <input type="range" id="in-textOpacity" min="0" max="100" value="80"
+                            oninput="updateTextOverlay()">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label"><span>Position Y</span></div>
+                        <input type="range" id="in-textY" min="0" max="100" value="50" oninput="updateTextOverlay()">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label"><span>Color</span></div>
+                        <input type="color" id="in-textColor" value="#ffffff"
+                            style="width:100%; height:40px; border:none; background:transparent;"
+                            oninput="updateTextOverlay()">
+                    </div>
+
+                    <button class="preset-chip" style="width:100%; margin-top:10px; border-color:var(--neon-pink);"
+                        onclick="clearText()">CLEAR TEXT</button>
+                </div>
+            </aside>
+
+            <!-- CANVAS AREA -->
+            <main class="canvas-wrapper">
+                <div class="empty-state" id="drop-zone">
+                    <i class="ri-upload-cloud-line"></i>
+                    <h3>DRAG & DROP</h3>
+                    <p style="font-size:0.8rem; margin-top:5px; color:var(--text-muted);">or click toolbar to upload</p>
+                </div>
+
+                <canvas id="main-canvas" class="canvas-container hidden"></canvas>
+
+                <!-- Floating Toolbar -->
+                <div class="action-bar">
+                    <label for="file-upload" class="action-btn" title="Upload">
+                        <i class="ri-folder-open-fill"></i>
+                        <input type="file" id="file-upload" hidden accept="image/*">
+                    </label>
+                    <button class="action-btn" title="Paste" onclick="pasteImage()"><i
+                            class="ri-clipboard-line"></i></button>
+                    <div style="width:1px; background:rgba(255,255,255,0.2); height:20px; align-self:center;"></div>
+                    <button class="action-btn" title="Undo" onclick="undo()"><i
+                            class="ri-arrow-go-back-line"></i></button>
+                    <button class="action-btn" title="Reset" onclick="resetAll()"><i
+                            class="ri-refresh-line"></i></button>
+                    <button class="action-btn primary" title="Save" onclick="downloadImage()"><i
+                            class="ri-save-3-line"></i></button>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <script>
+        // --- STATE MANAGEMENT ---
+        const state = {
+            img: null,
+            filters: {
+                brightness: 100,
+                contrast: 100,
+                saturation: 100,
+                blur: 0,
+                noise: 0
+            },
+            transform: {
+                rotate: 0,
+                flipH: 1,
+                flipV: 1
+            },
+            text: {
+                content: '',
+                size: 40,
+                opacity: 80,
+                y: 50, // percent
+                color: '#ffffff'
+            },
+            history: []
+        };
+
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d');
+        const dropZone = document.getElementById('drop-zone');
+
+        // Cache for Noise Pattern
+        let noiseCanvas = null;
+
+        // --- NAVIGATION ---
+        function enterApp() {
+            document.getElementById('landing-page').classList.add('slide-up');
+            document.getElementById('app-interface').classList.add('active');
+        }
+
+        function exitApp() {
+            document.getElementById('landing-page').classList.remove('slide-up');
+            document.getElementById('app-interface').classList.remove('active');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // --- CORE FUNCTIONS ---
+        function handleFile(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    state.img = img;
+                    resetAll(false); // Reset params but keep image
+                    render();
+                    dropZone.classList.add('hidden');
+                    canvas.classList.remove('hidden');
+                    showToast('IMAGE LOADED');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateFilter(key, value) {
+            state.filters[key] = parseFloat(value);
+            document.getElementById(`val-${key}`).textContent = value + (key === 'blur' ? 'px' : (key === 'noise' ? '' : '%'));
+
+            // Use RequestAnimationFrame for smooth slider
+            window.requestAnimationFrame(render);
+        }
+
+        function rotateImage(deg) {
+            state.transform.rotate = (state.transform.rotate + deg) % 360;
+            render();
+        }
+
+        function flipImage(axis) {
+            if (axis === 'h') state.transform.flipH *= -1;
+            if (axis === 'v') state.transform.flipV *= -1;
+            render();
+        }
+
+        function updateTextOverlay() {
+            state.text.content = document.getElementById('text-input').value;
+            state.text.size = parseInt(document.getElementById('in-textSize').value);
+            state.text.opacity = parseInt(document.getElementById('in-textOpacity').value);
+            state.text.y = parseInt(document.getElementById('in-textY').value);
+            state.text.color = document.getElementById('in-textColor').value;
+            document.getElementById('val-textSize').textContent = state.text.size + 'px';
+            render();
+        }
+
+        function clearText() {
+            document.getElementById('text-input').value = '';
+            updateTextOverlay();
+        }
+
+        // --- RENDER ENGINE (OPTIMIZED) ---
+        function render() {
+            if (!state.img) return;
+
+            // 1. Setup Canvas Dimensions (Handling Rotation swaps W/H)
+            const rot = Math.abs(state.transform.rotate);
+            const isVertical = rot === 90 || rot === 270;
+
+            // Only resize if dimensions actually change (browser handles this well usually)
+            if (canvas.width !== (isVertical ? state.img.height : state.img.width)) {
+                canvas.width = isVertical ? state.img.height : state.img.width;
+            }
+            if (canvas.height !== (isVertical ? state.img.width : state.img.height)) {
+                canvas.height = isVertical ? state.img.width : state.img.height;
+            }
+
+            // 2. Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 3. Save State & Apply Transforms
+            ctx.save();
+
+            // Move to center
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            // Rotate
+            ctx.rotate(state.transform.rotate * Math.PI / 180);
+
+            // Scale (Flip)
+            ctx.scale(state.transform.flipH, state.transform.flipV);
+
+            // Apply CSS Filters (Brightness etc) via context filter
+            const f = state.filters;
+            // Use template literal optimization
+            ctx.filter = `brightness(${f.brightness}%) contrast(${f.contrast}%) saturate(${f.saturation}%) blur(${f.blur}px)`;
+
+            // Draw Image (Offset by half original dimensions)
+            ctx.drawImage(state.img, -state.img.width / 2, -state.img.height / 2);
+
+            ctx.restore();
+
+            // 4. Apply Noise (Grain) - OPTIMIZED: Uses Pattern instead of pixel manipulation
+            if (state.filters.noise > 0) {
+                applyNoise(state.filters.noise);
+            }
+
+            // 5. Apply Text Overlay
+            if (state.text.content) {
+                ctx.save();
+                ctx.globalAlpha = state.text.opacity / 100;
+                ctx.fillStyle = state.text.color;
+                ctx.font = `bold ${state.text.size}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Position logic
+                const x = canvas.width / 2;
+                const y = (canvas.height * state.text.y) / 100;
+
+                ctx.shadowColor = "rgba(0,0,0,0.5)";
+                ctx.shadowBlur = 4;
+                ctx.fillText(state.text.content, x, y);
+                ctx.restore();
+            }
+        }
+
+        // Optimized Noise Generation (60 FPS Safe)
+        function applyNoise(amount) {
+            // Lazy load noise pattern
+            if (!noiseCanvas) {
+                noiseCanvas = document.createElement('canvas');
+                noiseCanvas.width = 100; // Small tile size
+                noiseCanvas.height = 100;
+                const nCtx = noiseCanvas.getContext('2d');
+                const imgData = nCtx.createImageData(100, 100);
+                const buffer32 = new Uint32Array(imgData.data.buffer);
+
+                // Generate random noise once
+                for (let i = 0; i < buffer32.length; i++) {
+                    const v = Math.random() * 255;
+                    // ABGR format (little-endian)
+                    buffer32[i] = (255 << 24) | (v << 16) | (v << 8) | v;
+                }
+                nCtx.putImageData(imgData, 0, 0);
+            }
+
+            // Apply using Pattern
+            ctx.save();
+            ctx.globalCompositeOperation = 'overlay';
+            ctx.globalAlpha = amount / 150; // Scaled for better visual range
+            ctx.fillStyle = ctx.createPattern(noiseCanvas, 'repeat');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+
+        // --- PRESETS ---
+        function applyPreset(name) {
+            // Reset transforms? No, keep them.
+            if (name === 'cyber') {
+                state.filters = { brightness: 110, contrast: 130, saturation: 150, blur: 0, noise: 20 };
+            } else if (name === 'noir') {
+                state.filters = { brightness: 100, contrast: 140, saturation: 0, blur: 0, noise: 30 };
+            } else if (name === 'vintage') {
+                state.filters = { brightness: 90, contrast: 90, saturation: 80, blur: 0, noise: 40 };
+            } else if (name === 'sunset') {
+                state.filters = { brightness: 105, contrast: 110, saturation: 130, blur: 0, noise: 0 };
+            }
+            updateUI();
+            render();
+            showToast(`PRESET: ${name.toUpperCase()}`);
+        }
+
+        function updateUI() {
+            // Sync sliders with state
+            document.getElementById('in-brightness').value = state.filters.brightness;
+            document.getElementById('in-contrast').value = state.filters.contrast;
+            document.getElementById('in-saturation').value = state.filters.saturation;
+            document.getElementById('in-noise').value = state.filters.noise;
+
+            // Update labels
+            ['brightness', 'contrast', 'saturation', 'noise'].forEach(k => {
+                document.getElementById(`val-${k}`).textContent = state.filters[k] + (k === 'noise' ? '' : '%');
+            });
+        }
+
+        function resetAll(clearImg = true) {
+            state.filters = { brightness: 100, contrast: 100, saturation: 100, blur: 0, noise: 0 };
+            state.transform = { rotate: 0, flipH: 1, flipV: 1 };
+            state.text = { content: '', size: 40, opacity: 80, y: 50, color: '#ffffff' };
+
+            updateUI();
+            document.getElementById('text-input').value = '';
+
+            if (clearImg) {
+                state.img = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                canvas.classList.add('hidden');
+                dropZone.classList.remove('hidden');
+            } else {
+                render();
+            }
+        }
+
+        function undo() {
+            showToast("Undo feature requires history implementation");
+        }
+
+        function downloadImage() {
+            if (!state.img) return;
+            const link = document.createElement('a');
+            link.download = 'lumina-export.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+            showToast('IMAGE SAVED');
+        }
+
+        function showToast(msg) {
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.innerText = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2000);
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('file-upload').addEventListener('change', e => handleFile(e.target.files[0]));
+
+        // Drag & Drop
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+        dropZone.addEventListener('dragleave', e => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        // Paste
+        async function pasteImage() {
+            try {
+                const items = await navigator.clipboard.read();
+                for (const item of items) {
+                    if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+                        const blob = await item.getType('image/png');
+                        handleFile(blob);
+                        return;
+                    }
+                }
+            } catch (e) { console.log(e); }
+        }
+
+    </script>
+</body>
+
+</html>
